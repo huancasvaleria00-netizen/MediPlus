@@ -1,1 +1,21 @@
+const Medicamento = require("../models/medicamento.model");
 
+// Obtener todos
+exports.getMedicamentos = async (req, res) => {
+  try {
+    const data = await Medicamento.getAll();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener medicamentos" });
+  }
+};
+
+// Crear medicamento
+exports.createMedicamento = async (req, res) => {
+  try {
+    const nuevo = await Medicamento.create(req.body);
+    res.json(nuevo);
+  } catch (error) {
+    res.status(500).json({ error: "Error al crear medicamento" });
+  }
+};
