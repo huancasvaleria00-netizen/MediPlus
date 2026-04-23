@@ -3,10 +3,10 @@ const router = express.Router();
 
 const controller = require("../controllers/medicamentos.controller");
 
-// Obtener todos
+// Get all medicines
 router.get("/", controller.getMedicamentos);
 
-// Crear medicamento
+// Create medicine
 router.post("/", controller.createMedicamento);
 
 module.exports = router;
