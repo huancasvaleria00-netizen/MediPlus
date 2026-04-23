@@ -7,9 +7,19 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Servir frontend (IMPORTANTE)
+app.use(express.static("public"));
+
 // Custom middleware
 const logger = require("./middlewares/logger");
 app.use(logger);
+
+// Database (IMPORTANTE)
+const createTable = require("../database/migrations");
+const seedData = require("../database/seeds");
+
+createTable();
+seedData();
 
 // Routes
 const medicamentosRoutes = require("./routes/medicamentos.routes");
