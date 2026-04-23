@@ -1,21 +1,21 @@
 let medicamentos = [
   { id: 1, nombre: "Paracetamol", precio: 5 },
-  { id: 2, nombre: "Ibuprofeno", precio: 8 }
+  { id: 2, nombre: "Ibuprofen", precio: 8 }
 ];
 
-// Obtener todos
+// Get all
 exports.getAll = async () => {
   return medicamentos;
 };
 
-// Crear nuevo
+// Create new
 exports.create = async (data) => {
-  const nuevo = {
+  const newMedicamento = {
     id: medicamentos.length + 1,
     nombre: data.nombre,
     precio: data.precio
   };
 
-  medicamentos.push(nuevo);
-  return nuevo;
+  medicamentos.push(newMedicamento);
+  return newMedicamento;
 };
