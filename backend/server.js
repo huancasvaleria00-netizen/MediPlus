@@ -7,21 +7,21 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Middleware personalizado
+// Custom middleware
 const logger = require("./middlewares/logger");
 app.use(logger);
 
-// Rutas
+// Routes
 const medicamentosRoutes = require("./routes/medicamentos.routes");
 app.use("/api/medicamentos", medicamentosRoutes);
 
-// Ruta base
+// Base route
 app.get("/", (req, res) => {
-  res.send("API MediPlus funcionando 🚀");
+  res.send("MediPlus API is running 🚀");
 });
 
-// Servidor
+// Server
 const PORT = 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
