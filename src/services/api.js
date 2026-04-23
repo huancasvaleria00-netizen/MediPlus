@@ -1,25 +1,24 @@
-const API_URL = "http://localhost:3000/api/medicamentos";
+import { supabase } from "./supabase.js";
 
 export const getMedicamentos = async () => {
-  try {
-    const res = await fetch(API_URL);
-    return await res.json();
-  } catch (error) {
-    console.error("Error fetching medicines:", error);
+  const { data, error } = await supabase
+    .from("medicamentos")
+    .select("*");
+
+  if (error) {
+    console.error(error);
     return [];
   }
+
+  return data;
 };
 
-export const createMedicamento = async (data) => {
-  try {
-    await fetch(API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    });
-  } catch (error) {
-    console.error("Error creating medicine:", error);
+export const createMedicamento = async (med) => {
+  const { error } = await supabase
+    .from("medicamentos")
+    .insert([med]);
+
+  if (error) {
+    console.error(error);
   }
 };
