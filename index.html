@@ -56,6 +56,252 @@
     }
     .nav-cta:hover { background: var(--verde-oscuro) !important; color: #fff !important; }
 
+    /* ── CART BUTTON ── */
+    .cart-btn {
+      position: relative; background: none; border: 2px solid var(--verde);
+      border-radius: 999px; padding: 0.45rem 1.1rem;
+      cursor: pointer; font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem; font-weight: 500; color: var(--verde);
+      display: flex; align-items: center; gap: 0.5rem;
+      transition: all 0.2s; flex-shrink: 0;
+    }
+    .cart-btn:hover { background: var(--verde); color: #fff; }
+    .cart-count {
+      position: absolute; top: -8px; right: -8px;
+      background: var(--acento); color: var(--texto);
+      font-size: 0.7rem; font-weight: 700;
+      width: 20px; height: 20px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transform: scale(0);
+      transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .cart-count.show { opacity: 1; transform: scale(1); }
+
+    /* ── CART SIDEBAR ── */
+    .cart-overlay {
+      position: fixed; inset: 0; background: rgba(26,26,46,0.45);
+      z-index: 200; opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+      backdrop-filter: blur(4px);
+    }
+    .cart-overlay.open { opacity: 1; pointer-events: all; }
+
+    .cart-sidebar {
+      position: fixed; top: 0; right: 0; height: 100vh;
+      width: 420px; max-width: 95vw;
+      background: var(--blanco);
+      z-index: 201; transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+      display: flex; flex-direction: column;
+      box-shadow: -8px 0 48px rgba(0,0,0,0.15);
+    }
+    .cart-sidebar.open { transform: translateX(0); }
+
+    .cart-header {
+      padding: 1.5rem 1.6rem 1.2rem;
+      border-bottom: 1px solid #eee;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .cart-header h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem; font-weight: 900; color: var(--verde-oscuro);
+    }
+    .cart-close {
+      background: var(--gris-claro); border: none; border-radius: 50%;
+      width: 36px; height: 36px; cursor: pointer;
+      font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .cart-close:hover { background: #e5e7eb; }
+
+    .cart-items {
+      flex: 1; overflow-y: auto; padding: 1rem 1.6rem;
+      display: flex; flex-direction: column; gap: 0.9rem;
+    }
+    .cart-items::-webkit-scrollbar { width: 4px; }
+    .cart-items::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
+
+    .cart-empty {
+      text-align: center; padding: 3rem 1rem;
+      color: var(--gris);
+    }
+    .cart-empty .empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
+    .cart-empty p { font-size: 0.9rem; }
+
+    .cart-item {
+      display: flex; gap: 1rem; align-items: center;
+      background: var(--crema); border-radius: 14px; padding: 0.9rem 1rem;
+      border: 1px solid rgba(0,135,90,0.08);
+      animation: slideIn 0.25s ease;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .cart-item-icon { font-size: 1.8rem; flex-shrink: 0; }
+    .cart-item-info { flex: 1; min-width: 0; }
+    .cart-item-name {
+      font-weight: 600; font-size: 0.85rem;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      margin-bottom: 0.15rem;
+    }
+    .cart-item-unit { font-size: 0.75rem; color: var(--gris); }
+    .cart-item-controls {
+      display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;
+    }
+    .qty-btn {
+      width: 26px; height: 26px; border-radius: 50%;
+      border: 1.5px solid var(--verde); background: none;
+      color: var(--verde); cursor: pointer; font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s; line-height: 1;
+    }
+    .qty-btn:hover { background: var(--verde); color: #fff; }
+    .qty-num { font-size: 0.88rem; font-weight: 600; min-width: 20px; text-align: center; }
+    .cart-item-price {
+      font-weight: 700; font-size: 0.9rem; color: var(--verde-oscuro);
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .cart-item-remove {
+      background: none; border: none; cursor: pointer;
+      font-size: 0.85rem; color: #ccc; padding: 0.2rem;
+      transition: color 0.2s; flex-shrink: 0;
+    }
+    .cart-item-remove:hover { color: #ef4444; }
+
+    /* ── CART FOOTER ── */
+    .cart-footer { padding: 1.2rem 1.6rem; border-top: 1px solid #eee; }
+
+    .cart-summary {
+      background: var(--crema); border-radius: 14px;
+      padding: 1rem 1.2rem; margin-bottom: 1.2rem;
+    }
+    .summary-row {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.85rem; color: var(--gris); margin-bottom: 0.5rem;
+    }
+    .summary-row:last-child { margin-bottom: 0; }
+    .summary-row.total {
+      font-size: 1.05rem; font-weight: 700; color: var(--texto);
+      border-top: 1px solid rgba(0,135,90,0.15);
+      padding-top: 0.6rem; margin-top: 0.4rem;
+    }
+    .summary-row.total .total-amount {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem; color: var(--verde-oscuro);
+    }
+
+    /* ── PAYMENT SECTION ── */
+    .payment-section {
+      margin-bottom: 1.2rem;
+    }
+    .payment-title {
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--gris);
+      margin-bottom: 0.8rem;
+    }
+    .payment-methods {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+    }
+    .payment-option {
+      position: relative;
+    }
+    .payment-option input[type="radio"] {
+      position: absolute; opacity: 0; width: 0; height: 0;
+    }
+    .payment-label {
+      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+      padding: 0.75rem 0.5rem;
+      border: 1.5px solid #e5e7eb; border-radius: 12px;
+      cursor: pointer; transition: all 0.2s;
+      font-size: 0.75rem; font-weight: 500; color: var(--gris);
+      text-align: center;
+    }
+    .payment-label .pay-icon { font-size: 1.4rem; }
+    .payment-option input:checked + .payment-label {
+      border-color: var(--verde);
+      background: var(--verde-claro);
+      color: var(--verde-oscuro);
+    }
+    .payment-label:hover { border-color: var(--verde); }
+
+    .payment-details {
+      margin-top: 0.9rem; padding: 0.9rem 1rem;
+      background: var(--gris-claro); border-radius: 12px;
+      font-size: 0.8rem; color: var(--gris);
+      display: none;
+    }
+    .payment-details.show { display: block; }
+    .payment-details strong { color: var(--texto); }
+
+    .card-fields {
+      display: none; flex-direction: column; gap: 0.6rem;
+      margin-top: 0.8rem;
+    }
+    .card-fields.show { display: flex; }
+    .card-input {
+      background: #fff; border: 1.5px solid #e5e7eb;
+      border-radius: 10px; padding: 0.6rem 0.9rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+      outline: none; transition: border 0.2s; width: 100%;
+    }
+    .card-input:focus { border-color: var(--verde); }
+    .card-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+
+    .btn-checkout {
+      width: 100%; background: var(--verde); color: #fff;
+      border: none; border-radius: 999px; padding: 0.95rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 600;
+      cursor: pointer; transition: background 0.2s, transform 0.2s;
+    }
+    .btn-checkout:hover { background: var(--verde-oscuro); transform: translateY(-1px); }
+    .btn-checkout:disabled {
+      background: #d1d5db; cursor: not-allowed; transform: none;
+    }
+
+    /* ── ORDER SUCCESS ── */
+    .order-success {
+      display: none; flex-direction: column; align-items: center;
+      justify-content: center; padding: 2rem 1.6rem;
+      text-align: center; flex: 1;
+    }
+    .order-success.show { display: flex; }
+    .success-icon {
+      width: 80px; height: 80px; background: var(--verde-claro);
+      border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; font-size: 2.5rem; margin-bottom: 1.2rem;
+      animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes popIn {
+      from { transform: scale(0); }
+      to { transform: scale(1); }
+    }
+    .order-success h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; font-weight: 900;
+      color: var(--verde-oscuro); margin-bottom: 0.6rem;
+    }
+    .order-success p { font-size: 0.88rem; color: var(--gris); line-height: 1.6; margin-bottom: 1.5rem; }
+    .btn-new-order {
+      background: var(--verde-claro); color: var(--verde-oscuro);
+      border: none; border-radius: 999px; padding: 0.75rem 1.8rem;
+      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.88rem;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .btn-new-order:hover { background: #b8ecd4; }
+
+    /* ── ADD TO CART FEEDBACK ── */
+    .add-feedback {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: var(--verde-oscuro); color: #fff;
+      padding: 0.75rem 1.5rem; border-radius: 999px;
+      font-size: 0.88rem; font-weight: 500;
+      opacity: 0; pointer-events: none; z-index: 300;
+      transition: all 0.3s; white-space: nowrap;
+    }
+    .add-feedback.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
     /* ── HERO ── */
     #inicio {
       min-height: 100vh;
@@ -125,7 +371,6 @@
     }
     .stat-label { font-size: 0.8rem; color: var(--gris); margin-top: 0.15rem; }
 
-    /* HERO IMAGE PLACEHOLDER */
     .hero-img-wrap {
       position: absolute; right: 5%; top: 50%;
       transform: translateY(-50%);
@@ -155,7 +400,7 @@
       padding: 0.3rem 0.9rem; border-radius: 999px; margin-top: 1.1rem;
     }
 
-    /* ── SECTIONS COMUNES ── */
+    /* ── SECTIONS ── */
     section { padding: 90px 5%; }
     .section-label {
       font-size: 0.78rem; font-weight: 500; letter-spacing: 0.14em;
@@ -208,9 +453,10 @@
       border: none; border-radius: 999px;
       padding: 0.55rem 1.4rem; font-size: 0.83rem;
       cursor: pointer; font-family: 'DM Sans', sans-serif;
-      font-weight: 500; transition: background 0.2s;
+      font-weight: 500; transition: background 0.2s, transform 0.15s;
     }
-    .btn-add:hover { background: var(--verde-oscuro); }
+    .btn-add:hover { background: var(--verde-oscuro); transform: scale(1.05); }
+    .btn-add:active { transform: scale(0.97); }
     .tag-generico {
       display: inline-block; background: var(--verde-claro);
       color: var(--verde-oscuro); font-size: 0.7rem; font-weight: 600;
@@ -334,6 +580,126 @@
 </head>
 <body>
 
+<!-- ADD FEEDBACK TOAST -->
+<div class="add-feedback" id="addFeedback">🛒 Producto agregado al carrito</div>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+
+<!-- CART SIDEBAR -->
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h3>🛒 Tu Carrito</h3>
+    <button class="cart-close" onclick="closeCart()">✕</button>
+  </div>
+
+  <!-- Items list -->
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty" id="cartEmpty">
+      <div class="empty-icon">🛍️</div>
+      <p>Tu carrito está vacío.<br/>¡Agrega algunos productos!</p>
+    </div>
+  </div>
+
+  <!-- Order success -->
+  <div class="order-success" id="orderSuccess">
+    <div class="success-icon">✅</div>
+    <h3>¡Pedido confirmado!</h3>
+    <p>Tu pedido ha sido recibido.<br/>Te contactaremos para coordinar la entrega.<br/><strong style="color:var(--verde-oscuro)">¡Gracias por confiar en MediPlus!</strong></p>
+    <button class="btn-new-order" onclick="resetCart()">Hacer otro pedido</button>
+  </div>
+
+  <!-- Footer checkout -->
+  <div class="cart-footer" id="cartFooter" style="display:none">
+
+    <!-- Summary -->
+    <div class="cart-summary">
+      <div class="summary-row">
+        <span>Subtotal</span>
+        <span id="subtotalAmt">S/ 0.00</span>
+      </div>
+      <div class="summary-row">
+        <span>Delivery (Lima)</span>
+        <span id="deliveryAmt">S/ 5.00</span>
+      </div>
+      <div class="summary-row">
+        <span>IGV (18%)</span>
+        <span id="igvAmt">S/ 0.00</span>
+      </div>
+      <div class="summary-row total">
+        <span>Total a pagar</span>
+        <span class="total-amount" id="totalAmt">S/ 0.00</span>
+      </div>
+    </div>
+
+    <!-- Payment methods -->
+    <div class="payment-section">
+      <div class="payment-title">Método de pago</div>
+      <div class="payment-methods">
+
+        <div class="payment-option">
+          <input type="radio" name="pago" id="pago-yape" value="yape" onchange="onPaymentChange(this)" checked/>
+          <label class="payment-label" for="pago-yape">
+            <span class="pay-icon">📱</span>
+            Yape / Plin
+          </label>
+        </div>
+
+        <div class="payment-option">
+          <input type="radio" name="pago" id="pago-tarjeta" value="tarjeta" onchange="onPaymentChange(this)"/>
+          <label class="payment-label" for="pago-tarjeta">
+            <span class="pay-icon">💳</span>
+            Tarjeta
+          </label>
+        </div>
+
+        <div class="payment-option">
+          <input type="radio" name="pago" id="pago-efectivo" value="efectivo" onchange="onPaymentChange(this)"/>
+          <label class="payment-label" for="pago-efectivo">
+            <span class="pay-icon">💵</span>
+            Efectivo
+          </label>
+        </div>
+
+        <div class="payment-option">
+          <input type="radio" name="pago" id="pago-transferencia" value="transferencia" onchange="onPaymentChange(this)"/>
+          <label class="payment-label" for="pago-transferencia">
+            <span class="pay-icon">🏦</span>
+            Transferencia
+          </label>
+        </div>
+
+      </div>
+
+      <!-- Payment detail info -->
+      <div class="payment-details show" id="detailYape">
+        Yapea o plínea al número <strong>941 278 653</strong> a nombre de <strong>MediPlus S.A.C.</strong>
+        y envía el comprobante al momento de confirmar.
+      </div>
+      <div class="payment-details" id="detailEfectivo">
+        Paga en <strong>efectivo al delivery</strong>. Procura tener el monto exacto para agilizar la entrega.
+      </div>
+      <div class="payment-details" id="detailTransferencia">
+        BCP · Cta. Cte. <strong>194-2381774-0-52</strong> · CCI <strong>002-194-002381774052-14</strong> a nombre de <strong>MediPlus S.A.C.</strong>
+      </div>
+
+      <!-- Card fields -->
+      <div class="card-fields" id="cardFields">
+        <input class="card-input" type="text" placeholder="Número de tarjeta" maxlength="19" oninput="formatCard(this)"/>
+        <input class="card-input" type="text" placeholder="Nombre en la tarjeta"/>
+        <div class="card-row">
+          <input class="card-input" type="text" placeholder="MM/AA" maxlength="5" oninput="formatExpiry(this)"/>
+          <input class="card-input" type="text" placeholder="CVV" maxlength="3"/>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-checkout" id="btnCheckout" onclick="confirmOrder()">
+      Confirmar pedido →
+    </button>
+  </div>
+</div>
+
 <!-- NAV -->
 <nav>
   <div class="logo">Medi<span>Plus</span></div>
@@ -341,8 +707,12 @@
     <li><a href="#inicio">Inicio</a></li>
     <li><a href="#productos">Productos</a></li>
     <li><a href="#nosotros">Nosotros</a></li>
-    <li><a href="#contacto" class="nav-cta">Contacto</a></li>
+    <li><a href="#contacto">Contacto</a></li>
   </ul>
+  <button class="cart-btn" onclick="openCart()">
+    🛒 Carrito
+    <span class="cart-count" id="cartCount">0</span>
+  </button>
 </nav>
 
 <!-- HERO -->
@@ -400,7 +770,7 @@
       <div class="product-name">Paracetamol 500 mg</div>
       <div class="product-desc">Analgésico y antipirético. Alivia el dolor leve a moderado y reduce la fiebre.</div>
       <div class="product-price">S/ 2.50 <span>/ 10 tabs</span></div>
-      <button class="btn-add">Agregar</button>
+      <button class="btn-add" onclick="addToCart('Paracetamol 500 mg', 2.50, '🤒', '/ 10 tabs')">Agregar</button>
     </div>
 
     <div class="product-card">
@@ -409,7 +779,7 @@
       <div class="product-name">Amoxicilina 500 mg</div>
       <div class="product-desc">Antibiótico de amplio espectro para infecciones bacterianas.</div>
       <div class="product-price">S/ 12.00 <span>/ 21 cápsulas</span></div>
-      <button class="btn-add">Agregar</button>
+      <button class="btn-add" onclick="addToCart('Amoxicilina 500 mg', 12.00, '🦠', '/ 21 cápsulas')">Agregar</button>
     </div>
 
     <div class="product-card">
@@ -418,7 +788,7 @@
       <div class="product-name">Ibuprofeno 400 mg</div>
       <div class="product-desc">Antiinflamatorio no esteroideo (AINE). Para dolor, fiebre e inflamación.</div>
       <div class="product-price">S/ 3.80 <span>/ 10 tabs</span></div>
-      <button class="btn-add">Agregar</button>
+      <button class="btn-add" onclick="addToCart('Ibuprofeno 400 mg', 3.80, '🩺', '/ 10 tabs')">Agregar</button>
     </div>
 
     <div class="product-card">
@@ -427,7 +797,7 @@
       <div class="product-name">Loratadina 10 mg</div>
       <div class="product-desc">Antihistamínico para el alivio de alergias estacionales y rinitis alérgica.</div>
       <div class="product-price">S/ 4.20 <span>/ 10 tabs</span></div>
-      <button class="btn-add">Agregar</button>
+      <button class="btn-add" onclick="addToCart('Loratadina 10 mg', 4.20, '😮‍💨', '/ 10 tabs')">Agregar</button>
     </div>
 
     <div class="product-card">
@@ -436,7 +806,7 @@
       <div class="product-name">Enalapril 10 mg</div>
       <div class="product-desc">Antihipertensivo. Tratamiento de la presión arterial alta e insuficiencia cardíaca.</div>
       <div class="product-price">S/ 8.50 <span>/ 30 tabs</span></div>
-      <button class="btn-add">Agregar</button>
+      <button class="btn-add" onclick="addToCart('Enalapril 10 mg', 8.50, '💓', '/ 30 tabs')">Agregar</button>
     </div>
 
     <div class="product-card">
@@ -445,7 +815,7 @@
       <div class="product-name">Metformina 850 mg</div>
       <div class="product-desc">Antidiabético oral. Controla los niveles de glucosa en diabetes tipo 2.</div>
       <div class="product-price">S/ 9.90 <span>/ 30 tabs</span></div>
-      <button class="btn-add">Agregar</button>
+      <button class="btn-add" onclick="addToCart('Metformina 850 mg', 9.90, '🧪', '/ 30 tabs')">Agregar</button>
     </div>
 
     <div class="product-card">
@@ -454,7 +824,7 @@
       <div class="product-name">Salbutamol 100 mcg</div>
       <div class="product-desc">Broncodilatador de acción rápida para asma y broncoespasmo.</div>
       <div class="product-price">S/ 14.00 <span>/ inhalador</span></div>
-      <button class="btn-add">Agregar</button>
+      <button class="btn-add" onclick="addToCart('Salbutamol 100 mcg', 14.00, '🫁', '/ inhalador')">Agregar</button>
     </div>
 
     <div class="product-card">
@@ -463,7 +833,7 @@
       <div class="product-name">Omeprazol 20 mg</div>
       <div class="product-desc">Inhibidor de la bomba de protones. Trata gastritis, úlceras y reflujo.</div>
       <div class="product-price">S/ 6.00 <span>/ 14 cápsulas</span></div>
-      <button class="btn-add">Agregar</button>
+      <button class="btn-add" onclick="addToCart('Omeprazol 20 mg', 6.00, '🌿', '/ 14 cápsulas')">Agregar</button>
     </div>
 
   </div>
@@ -598,12 +968,171 @@
 </footer>
 
 <script>
-  // Scroll fade-up observer
+  // ── CART STATE ──
+  const DELIVERY = 5.00;
+  const IGV_RATE = 0.18;
+  let cart = [];
+
+  // ── CART OPEN / CLOSE ──
+  function openCart() {
+    document.getElementById('cartSidebar').classList.add('open');
+    document.getElementById('cartOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeCart() {
+    document.getElementById('cartSidebar').classList.remove('open');
+    document.getElementById('cartOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ── ADD TO CART ──
+  function addToCart(name, price, icon, unit) {
+    const existing = cart.find(i => i.name === name);
+    if (existing) {
+      existing.qty++;
+    } else {
+      cart.push({ name, price, icon, unit, qty: 1 });
+    }
+    renderCart();
+    showFeedback();
+    updateCartCount();
+  }
+
+  function showFeedback() {
+    const fb = document.getElementById('addFeedback');
+    fb.classList.add('show');
+    clearTimeout(fb._t);
+    fb._t = setTimeout(() => fb.classList.remove('show'), 2200);
+  }
+
+  function updateCartCount() {
+    const total = cart.reduce((s, i) => s + i.qty, 0);
+    const el = document.getElementById('cartCount');
+    el.textContent = total;
+    total > 0 ? el.classList.add('show') : el.classList.remove('show');
+  }
+
+  // ── CHANGE QTY ──
+  function changeQty(name, delta) {
+    const item = cart.find(i => i.name === name);
+    if (!item) return;
+    item.qty += delta;
+    if (item.qty <= 0) cart = cart.filter(i => i.name !== name);
+    renderCart();
+    updateCartCount();
+  }
+
+  // ── REMOVE ITEM ──
+  function removeItem(name) {
+    cart = cart.filter(i => i.name !== name);
+    renderCart();
+    updateCartCount();
+  }
+
+  // ── RENDER CART ──
+  function renderCart() {
+    const container = document.getElementById('cartItems');
+    const emptyEl   = document.getElementById('cartEmpty');
+    const footerEl  = document.getElementById('cartFooter');
+
+    if (cart.length === 0) {
+      container.innerHTML = '';
+      container.appendChild(emptyEl);
+      emptyEl.style.display = '';
+      footerEl.style.display = 'none';
+      return;
+    }
+
+    emptyEl.style.display = 'none';
+    footerEl.style.display = '';
+
+    container.innerHTML = '';
+    cart.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'cart-item';
+      div.innerHTML = `
+        <div class="cart-item-icon">${item.icon}</div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">${item.name}</div>
+          <div class="cart-item-unit">${item.unit} · S/ ${item.price.toFixed(2)} c/u</div>
+          <div class="cart-item-controls">
+            <button class="qty-btn" onclick="changeQty('${item.name}',-1)">−</button>
+            <span class="qty-num">${item.qty}</span>
+            <button class="qty-btn" onclick="changeQty('${item.name}',1)">+</button>
+          </div>
+        </div>
+        <div class="cart-item-price">S/ ${(item.price * item.qty).toFixed(2)}</div>
+        <button class="cart-item-remove" onclick="removeItem('${item.name}')" title="Eliminar">✕</button>
+      `;
+      container.appendChild(div);
+    });
+
+    calcTotals();
+  }
+
+  // ── CALC TOTALS ──
+  function calcTotals() {
+    const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const igv      = subtotal * IGV_RATE;
+    const total    = subtotal + DELIVERY + igv;
+
+    document.getElementById('subtotalAmt').textContent = `S/ ${subtotal.toFixed(2)}`;
+    document.getElementById('igvAmt').textContent      = `S/ ${igv.toFixed(2)}`;
+    document.getElementById('totalAmt').textContent    = `S/ ${total.toFixed(2)}`;
+  }
+
+  // ── PAYMENT CHANGE ──
+  function onPaymentChange(radio) {
+    document.getElementById('detailYape').classList.remove('show');
+    document.getElementById('detailEfectivo').classList.remove('show');
+    document.getElementById('detailTransferencia').classList.remove('show');
+    document.getElementById('cardFields').classList.remove('show');
+
+    if (radio.value === 'yape')          document.getElementById('detailYape').classList.add('show');
+    if (radio.value === 'efectivo')      document.getElementById('detailEfectivo').classList.add('show');
+    if (radio.value === 'transferencia') document.getElementById('detailTransferencia').classList.add('show');
+    if (radio.value === 'tarjeta')       document.getElementById('cardFields').classList.add('show');
+  }
+
+  // ── CONFIRM ORDER ──
+  function confirmOrder() {
+    const btn = document.getElementById('btnCheckout');
+    btn.textContent = 'Procesando…';
+    btn.disabled = true;
+    setTimeout(() => {
+      document.getElementById('cartItems').style.display  = 'none';
+      document.getElementById('cartFooter').style.display = 'none';
+      document.getElementById('orderSuccess').classList.add('show');
+    }, 1200);
+  }
+
+  // ── RESET CART ──
+  function resetCart() {
+    cart = [];
+    updateCartCount();
+    document.getElementById('cartItems').style.display  = '';
+    document.getElementById('orderSuccess').classList.remove('show');
+    document.getElementById('btnCheckout').textContent = 'Confirmar pedido →';
+    document.getElementById('btnCheckout').disabled    = false;
+    renderCart();
+  }
+
+  // ── CARD FORMAT HELPERS ──
+  function formatCard(input) {
+    let v = input.value.replace(/\D/g,'').substring(0,16);
+    input.value = v.replace(/(.{4})/g,'$1 ').trim();
+  }
+  function formatExpiry(input) {
+    let v = input.value.replace(/\D/g,'').substring(0,4);
+    if (v.length > 2) v = v.slice(0,2) + '/' + v.slice(2);
+    input.value = v;
+  }
+
+  // ── SCROLL ANIMATIONS ──
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
         e.target.classList.add('visible');
-        // stagger children
         e.target.querySelectorAll('.product-card, .valor-item, .contact-card').forEach((el, i) => {
           el.style.transitionDelay = (i * 0.08) + 's';
           el.classList.add('fade-up', 'visible');
@@ -613,13 +1142,6 @@
   }, { threshold: 0.12 });
 
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-
-  // Smooth nav highlight
-  document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => {
-      document.querySelectorAll('.nav-links a').forEach(l => l.style.color = '');
-    });
-  });
 </script>
 </body>
 </html>
