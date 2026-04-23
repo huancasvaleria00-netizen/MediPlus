@@ -1,1 +1,20 @@
+const db = require("./db");
 
+const seedData = () => {
+  const query = `
+    INSERT INTO medicamentos (nombre, precio)
+    VALUES 
+      ('Paracetamol', 5),
+      ('Ibuprofen', 8)
+  `;
+
+  db.query(query, (err) => {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log("Data inserted");
+    }
+  });
+};
+
+module.exports = seedData;
