@@ -3,27 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <title>MediPlus 💊</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico">
 </head>
 <body>
 
-  <header>
-    <h1>MediPlus 💊</h1>
-    <p>Your trusted digital pharmacy</p>
-  </header>
+  <!-- App principal -->
+  <div id="app"></div>
 
-  <main>
-    <h2>Available Medicines</h2>
-    <div id="medicamentos" class="grid"></div>
+  <!-- Conexión con tu frontend (src) -->
+  <script type="module" src="/src/main.js"></script>
 
-    <h2>Add New Medicine</h2>
-    <form id="form">
-      <input type="text" id="nombre" placeholder="Medicine name" required>
-      <input type="number" id="precio" placeholder="Price" required>
-      <button type="submit">Add</button>
-    </form>
-  </main>
-
-  <script src="app.js"></script>
 </body>
 </html>
