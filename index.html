@@ -1127,47 +1127,21 @@
 
 // ── RESET CART ──
 function resetCart() {
-
-  // Clear cart
   cart = [];
 
-  // Update cart counter
   updateCartCount();
 
-  // Show cart items again
-  document.getElementById('cartItems').style.display = 'flex';
+  document.getElementById('cartItems').style.display = '';
 
-  // Hide success screen
   document.getElementById('orderSuccess')
     .classList.remove('show');
 
-  // Restore checkout button
-  const btn = document.getElementById('btnCheckout');
+  document.getElementById('btnCheckout').textContent =
+    'Confirmar pedido →';
 
-  btn.textContent = 'Confirm Order →';
-  btn.disabled = false;
+  document.getElementById('btnCheckout').disabled = false;
 
-  // Reset default payment method
-  document.getElementById('pago-yape').checked = true;
-
-  // Restore payment panels
-  document.getElementById('detailYape')
-    .classList.add('show');
-
-  document.getElementById('detailEfectivo')
-    .classList.remove('show');
-
-  document.getElementById('detailTransferencia')
-    .classList.remove('show');
-
-  document.getElementById('cardFields')
-    .classList.remove('show');
-
-  // Re-render empty cart
   renderCart();
-
-  // Show empty cart message
-  document.getElementById('cartEmpty').style.display = '';
 }
 
   // ── SCROLL ANIMATIONS ──
