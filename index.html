@@ -1124,51 +1124,24 @@
       document.getElementById('orderSuccess').classList.add('show');
     }, 1200);
   }
-  
-// ── RESET CART ──
-function resetCart() {
 
-  // Vaciar carrito
+     // ── RESET CART ──
+function resetCart() {
   cart = [];
 
-  // Actualizar contador
-  if (typeof updateCartCount === 'function') {
-    updateCartCount();
-  }
+  updateCartCount();
 
-  // Mostrar lista del carrito
-  const cartItems = document.getElementById('cartItems');
-  if (cartItems) {
-    cartItems.style.display = '';
-  }
+  document.getElementById('cartItems').style.display = '';
 
-  // Ocultar mensaje de éxito
-  const orderSuccess = document.getElementById('orderSuccess');
-  if (orderSuccess) {
-    orderSuccess.classList.remove('show');
-  }
+  document.getElementById('orderSuccess')
+    .classList.remove('show');
 
-  // Restaurar botón
-  const btnCheckout = document.getElementById('btnCheckout');
-  if (btnCheckout) {
-    btnCheckout.textContent = 'Confirmar pedido →';
-    btnCheckout.disabled = false;
-  }
+  document.getElementById('btnCheckout').textContent =
+    'Confirmar pedido →';
 
-  // Renderizar carrito
-  if (typeof renderCart === 'function') {
-    renderCart();
-  }
+  document.getElementById('btnCheckout').disabled = false;
 
-  // ── CARD FORMAT HELPERS ──
-  function formatCard(input) {
-    let v = input.value.replace(/\D/g,'').substring(0,16);
-    input.value = v.replace(/(.{4})/g,'$1 ').trim();
-  }
-  function formatExpiry(input) {
-    let v = input.value.replace(/\D/g,'').substring(0,4);
-    if (v.length > 2) v = v.slice(0,2) + '/' + v.slice(2);
-    input.value = v;
+  renderCart();
   }
 
   // ── SCROLL ANIMATIONS ──
