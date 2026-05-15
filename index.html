@@ -1124,15 +1124,39 @@
       document.getElementById('orderSuccess').classList.add('show');
     }, 1200);
   }
+  
+// ── RESET CART ──
+function resetCart() {
 
-  // ── RESET CART ──
-  function resetCart() {
-    cart = [];
+  // Vaciar carrito
+  cart = [];
+
+  // Actualizar contador
+  if (typeof updateCartCount === 'function') {
     updateCartCount();
-    document.getElementById('cartItems').style.display  = '';
-    document.getElementById('orderSuccess').classList.remove('show');
-    document.getElementById('btnCheckout').textContent = 'Confirmar pedido →';
-    document.getElementById('btnCheckout').disabled    = false;
+  }
+
+  // Mostrar lista del carrito
+  const cartItems = document.getElementById('cartItems');
+  if (cartItems) {
+    cartItems.style.display = '';
+  }
+
+  // Ocultar mensaje de éxito
+  const orderSuccess = document.getElementById('orderSuccess');
+  if (orderSuccess) {
+    orderSuccess.classList.remove('show');
+  }
+
+  // Restaurar botón
+  const btnCheckout = document.getElementById('btnCheckout');
+  if (btnCheckout) {
+    btnCheckout.textContent = 'Confirmar pedido →';
+    btnCheckout.disabled = false;
+  }
+
+  // Renderizar carrito
+  if (typeof renderCart === 'function') {
     renderCart();
   }
 
